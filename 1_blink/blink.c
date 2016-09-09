@@ -1,7 +1,7 @@
 #define F_CPU 16000000UL
 #define DDRB (*((volatile unsigned char *)0x24))
 #define PORTB (*((volatile unsigned char *)0x25))
-
+#define PRR (*((volatile unsigned char *)0x64))
 #define TCNT0 (*((volatile unsigned char *)0x46)) //Timer/counter register
 #define TCCR0 (*((volatile unsigned char *)0x45)) //Timer/counter control register
 #define TIMSK (*((volatile unsigned char *)0x6E)) //Timer/counter interrupt mask
@@ -38,7 +38,9 @@ ISR(TIMER0_OVF_vect) // called after overflow of TCNT0
 
 int main(void)
 {
-	DDRB|=0xFF; //led connected
+    PRR = 0xFF;
+    PRR &= (0<<5);
+    DDRB|=0xFF; //led connected
 	timer0_init(); //timer initialize
 	while(1)
 	{
